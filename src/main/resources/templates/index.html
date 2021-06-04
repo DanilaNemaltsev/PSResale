@@ -11,7 +11,7 @@
 	<header th:replace="layout/layout :: header"></header>
 
 	<div class="container-fluid" style="margin-top: 100px;">
-
+		<span th:text="${message}"></span>
 		<div class="row justify-content-center">
 			<div class="col-sm-12 col-md-2 col-lg-2 mb-2" sec:authorize="isAuthenticated()">
 				<div class="d-block" sec:authorize="isAuthenticated()">
@@ -19,7 +19,7 @@
 				</div>
 				<ul class="list-group">
 					<li class="list-group-item"><a th:href="@{/app/cart}"><i
-						class="fas fa-shopping-cart"></i> Корзина</a> <span class="float-right badge badge-pill badge-primary" th:text="${cart == null} ? '0' : ${cart.size()}"></span></li>
+						class="fas fa-shopping-cart" ></i> Корзина</a> <span class="float-right badge badge-pill badge-primary" th:text="${cart == null} ? '0' : ${cart.size()}"></span></li>
 					<li class="list-group-item" th:if="${cart == null}">Корзина пустая</li>
 					<li class="list-group-item" th:unless="${cart == null}" th:each="p : ${cart}">
 						<span class="text-muted" th:text="${p.name}">

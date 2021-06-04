@@ -31,7 +31,10 @@
 						th:href="@{/app/my_products}">Мои продукты</a></li>
 					<li class="nav-item active" sec:authorize="isAuthenticated()"><a class="nav-link"
 						th:href="@{/app/my-purchases}">Мои покупки</a></li>
+					<li class="nav-item active" th:if="${#authentication.name == 'admin@mail.ru'}"><a class="nav-link"
+					 	th:href="@{/admin}">Панель администратора</a></li>
 				</ul>
+
 				<form class="form-inline my-2 my-lg-0 mr-2">
 					<input type="text" class="form-control" placeholder="Поиск..."
 						name="q" th:value="${param.q}">

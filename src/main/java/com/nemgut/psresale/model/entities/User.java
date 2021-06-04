@@ -1,15 +1,10 @@
 package com.nemgut.psresale.model.entities;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
@@ -19,6 +14,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @NoArgsConstructor
@@ -26,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name="users")
-public class User {
+public class User implements UserDetails {
 	
 	@Id 
 	@GeneratedValue
@@ -51,6 +48,13 @@ public class User {
 	@NotBlank
 	private String password;
 
+	private boolean isActivated;
+
+	private String activationCode;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Role> roles;
+
 	public User(String name, String lastname, String avatar, String email, String password) {
 		super();
 		this.name = name;
@@ -58,6 +62,30 @@ public class User {
 		this.avatar = avatar;
 		this.email = email;
 		this.password = password;
+	}
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+	public void setActivated(boolean activated) {
+		isActivated = activated;
+	}
+
+	public String getActivationCode() {
+		return activationCode;
+	}
+
+	public void setActivationCode(String activationCode) {
+		this.activationCode = activationCode;
 	}
 
 	public Long getId() {
@@ -108,8 +136,39 @@ public class User {
 		this.email = email;
 	}
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		System.out.println(roles);
+		return roles;
+	}
+
 	public String getPassword() {
 		return password;
+	}
+
+	@Override
+	public String getUsername() {
+		return null;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return isActivated;
 	}
 
 	public void setPassword(String password) {

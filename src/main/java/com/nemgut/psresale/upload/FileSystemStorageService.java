@@ -105,7 +105,7 @@ public class FileSystemStorageService implements StorageService {
 			Path file = load(justFilename);
 			Files.deleteIfExists(file);
 		} catch (IOException e) {
-			throw new StorageException("Ошибка", e);
+			throw new StorageException("Error al eliminar un fichero", e);
 		}
 
 	}
